@@ -1,0 +1,35 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+pandas
+numpy
+requests
+
+# LangChain core
+
+langchain
+langgraph
+langchain-core
+langchain-community
+
+# LLM integrations
+
+langchain-groq
+langchain-google-genai
+langchain-mistralai
+langchain_huggingface
+
+# Optional but useful
+
+tiktoken
+
+# Vector / embeddings (future-proofing for RAG)
+
+faiss-cpu
+
+# Frontend
+
+streamlit
+
+
