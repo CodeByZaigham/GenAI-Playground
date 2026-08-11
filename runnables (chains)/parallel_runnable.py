@@ -5,10 +5,10 @@ from langchain_core.runnables import RunnableParallel,RunnableLambda
 from dotenv import load_dotenv
 load_dotenv()
 
-prompt1=ChatPromptTemplate([
+prompt1=ChatPromptTemplate.from_template([
      "give me {topic1} explanation in simple words"
 ])
-prompt2=ChatPromptTemplate([
+prompt2=ChatPromptTemplate.from_template([
      "give me {topic2} explanation in simple words"
 ])
 

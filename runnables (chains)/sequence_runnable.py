@@ -5,7 +5,7 @@ from langchain_core.runnables import RunnableSequence
 from dotenv import load_dotenv
 load_dotenv()
 
-prompt=ChatPromptTemplate([
+prompt=ChatPromptTemplate.from_template([
      "give me {topic} explanation in simple words"
 ])
 
