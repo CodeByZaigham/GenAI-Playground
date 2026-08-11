@@ -12,5 +12,6 @@ A collection of hands-on experiments while learning Generative AI and LangChain.
 - Runnables / Chains
 - Structured Outputs
 - RAG Experiments
+- Langchain built-in Tools
 
 > Every folder contains an independent runnable example with explanations.
