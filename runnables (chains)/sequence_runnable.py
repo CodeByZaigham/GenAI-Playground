@@ -1,6 +1,7 @@
 from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnableSequence
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -8,12 +9,12 @@ prompt=ChatPromptTemplate([
      "give me {topic} explanation in simple words"
 ])
 
-model = ChatMistralAI(model="mistral-medium-latest",temperature=0,max_tokens=20) #good model
+model = ChatMistralAI(model="mistral-medium-latest") 
 
 output=StrOutputParser()
 
 #sequence runable
-chain=prompt | model | output
+chain=RunnableSequence(prompt | model | output)
 
 response=chain.invoke({"topic":"deep learning"})
 
