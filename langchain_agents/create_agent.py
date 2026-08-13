@@ -1,15 +1,16 @@
+from langchain.agents import create_agent
+from langchain_mistralai import ChatMistralAI
 from langchain.messages import HumanMessage
+from langchain_community.tools.tavily_search import TavilySearchResults
 from dotenv import load_dotenv
 load_dotenv()
-import os
+from langchain.tools import tool
 import requests
-from langchain_core.tools import tool
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_mistralai import ChatMistralAI
-
-weatherapi=os.getenv("OPENWEATHER_API_KEY")
+import os
+from rich import print
 
 llm=ChatMistralAI(model="mistral-medium-latest")
+weatherapi=os.getenv("OPENWEATHER_API_KEY")
 
 @tool
 def get_weather(city:str)->dict:
@@ -42,41 +43,18 @@ def get_news(city:str)->list:
      news=search_engine.invoke(f"latest news of {city}")
      return news
 
-tools={
-     "get_news":get_news,
-     "get_weather":get_weather
-}
+agent = create_agent(
+     model=llm,
+     tools=[get_news,get_weather],
+     system_prompt="you are a helpful city weather and news assistant"
+)
 
-llm_with_tools=llm.bind_tools([get_news,get_weather])
-
-# AGENT LOGIC
-
-print("welcome to the agent!! enter 0 to exit")
+print("welcome to the city agent, press 0 to exit")
 
 while True:
-
-     messages=[]
-
-     query=input("ask news and weathers about any city")
-
+     query=input("ask weather or news about a city: ")
      if query=="0": break
-
-     prompt=HumanMessage(
-          content=query
-     )
-
-     messages.append(prompt)
-
-     response=llm_with_tools.invoke([prompt])
-
-     messages.append(response)
-
-     if response.tool_calls:
-          for i in response.tool_calls:
-               name=i["name"]
-               tool_response=tools[name].invoke(i)
-               messages.append(tool_response)
-          output=llm_with_tools.invoke(messages)
-          print(output.content)
-     else: print(response.content)
-
+     result=agent.invoke({
+          "messages":[{"role":"user","content":query}]
+     })
+     print(result["messages"][-1].content)
